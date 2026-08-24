@@ -1,0 +1,11 @@
+{
+  "name": "Mes Envies",
+  "short_name": "Mes Envies",
+  "description": "Ma liste d'envies",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#f5f5f7",
+  "theme_color": "#111827",
+  "lang": "fr",
+  "scope": "./"
+}
