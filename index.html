@@ -79,4 +79,12 @@ function del(id){products=products.filter(p=>p.id!==id);localStorage.setItem(KEY
 function esc(s){return String(s||"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
 $("search").addEventListener("input",render);render();
 </script>
+ 
+<script>
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("./sw.js");
+  });
+}
+</script>
 </body></html>
