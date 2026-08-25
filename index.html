@@ -43,7 +43,10 @@ a{color:inherit;text-decoration:none}
 <dialog id="dlg">
 <h2>Ajouter un produit</h2>
 <div class="form">
-<input id="url" placeholder="URL de la page produit">
+<div style="display:flex;gap:8px">
+  <input id="url" placeholder="URL de la page produit" style="flex:1">
+  <button type="button" onclick="pasteFromClipboard()">Coller</button>
+</div>
 <input id="name" placeholder="Nom du produit">
 <div class="row"><input id="price" type="number" step="0.01" placeholder="Prix (€)"><select id="cat"><option>Autres</option><option>Électronique</option><option>Vêtements</option><option>Sport</option><option>Maison</option><option>Beauté</option></select></div>
 <input id="image" placeholder="URL de l'image (optionnel)">
@@ -56,20 +59,22 @@ a{color:inherit;text-decoration:none}
 const KEY="mes-envies-v1";
 let products=JSON.parse(localStorage.getItem(KEY)||"[]");
 const $=id=>document.getElementById(id);
-async function pasteLink(){
+function pasteLink(){
+  openForm();
+  $("url").focus();
+}
+async function pasteFromClipboard(){
   try {
     const text = await navigator.clipboard.readText();
-    const url = text.trim();
 
-    if (!url || !/^https?:\/\//i.test(url)) {
-      alert("Copie d'abord l'adresse du site que tu veux ajouter.");
+    if (!text || !/^https?:\/\//i.test(text.trim())) {
+      alert("Le presse-papiers ne contient pas de lien valide.");
       return;
     }
 
-    openForm();
-    $("url").value = url;
+    $("url").value = text.trim();
   } catch(e) {
-    alert("Impossible de lire le lien. Copie d'abord l'adresse du site.");
+    alert("Autorise l'accès au presse-papiers ou colle le lien manuellement.");
   }
 }
 function openForm(){dlg.showModal()}
