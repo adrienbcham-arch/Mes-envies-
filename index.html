@@ -47,6 +47,10 @@ a{color:inherit;text-decoration:none}
   <input id="url" placeholder="URL de la page produit" style="flex:1">
   <button type="button" onclick="pasteFromClipboard()">Coller</button>
 </div>
+
+<button type="button" onclick="getProductInfo()" style="margin-top:8px;width:100%">
+  Récupérer les informations
+</button>
 <input id="name" placeholder="Nom du produit">
 <div class="row"><input id="price" type="number" step="0.01" placeholder="Prix (€)"><select id="cat"><option>Autres</option><option>Électronique</option><option>Vêtements</option><option>Sport</option><option>Maison</option><option>Beauté</option></select></div>
 <input id="image" placeholder="URL de l'image (optionnel)">
@@ -75,6 +79,32 @@ async function pasteFromClipboard(){
     $("url").value = text.trim();
   } catch(e) {
     alert("Autorise l'accès au presse-papiers ou colle le lien manuellement.");
+  }
+}
+async function getProductInfo(){
+  const url = $("url").value.trim();
+
+  if(!url){
+    alert("Colle d'abord l'URL du produit.");
+    return;
+  }
+
+  try{
+    const response = await fetch(
+      "https://api.microlink.io/?url=" + encodeURIComponent(url)
+    );
+
+    if(!response.ok) throw new Error();
+
+    const data = await response.json();
+    const meta = data.data?.metadata || {};
+
+    if(meta.title) $("name").value = meta.title;
+    if(meta.image?.url) $("image").value = meta.image.url;
+
+    alert("Informations récupérées !");
+  }catch(e){
+    alert("Impossible de récupérer les informations de ce site. Tu peux les remplir manuellement.");
   }
 }
 function openForm(){dlg.showModal()}
