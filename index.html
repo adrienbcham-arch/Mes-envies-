@@ -89,22 +89,42 @@ async function getProductInfo(){
     return;
   }
 
-  try{
+  try {
     const response = await fetch(
       "https://api.microlink.io/?url=" + encodeURIComponent(url)
     );
 
-    if(!response.ok) throw new Error();
+    if(!response.ok) {
+      throw new Error("Erreur API");
+    }
 
-    const data = await response.json();
-    const meta = data.data?.metadata || {};
+    const result = await response.json();
+    const data = result.data || {};
 
-    if(meta.title) $("name").value = meta.title;
-    if(meta.image?.url) $("image").value = meta.image.url;
+    const title = data.title || data.metadata?.title || "";
+    const image = data.image?.url || data.metadata?.image?.url || "";
 
-    alert("Informations récupérées !");
-  }catch(e){
-    alert("Impossible de récupérer les informations de ce site. Tu peux les remplir manuellement.");
+    let found = false;
+
+    if(title) {
+      $("name").value = title;
+      found = true;
+    }
+
+    if(image) {
+      $("image").value = image;
+      found = true;
+    }
+
+    if(found) {
+      alert("Informations récupérées !");
+    } else {
+      alert("Le site ne fournit pas d'informations récupérables automatiquement.");
+    }
+
+  } catch(error) {
+    console.error(error);
+    alert("Impossible de récupérer les informations de ce site.");
   }
 }
 function openForm(){dlg.showModal()}
