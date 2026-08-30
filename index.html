@@ -12,177 +12,163 @@
 <style>
 * {
   box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
 }
 
 html {
   min-height: 100%;
+  background: #f2f2f7;
 }
 
 body {
   margin: 0;
   min-height: 100vh;
-  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display",
-    "SF Pro Text", "Segoe UI", sans-serif;
-  color: #111827;
-  background:
-    radial-gradient(circle at 15% 10%, rgba(255,255,255,.95) 0, transparent 28%),
-    radial-gradient(circle at 85% 20%, rgba(130,170,255,.55) 0, transparent 30%),
-    radial-gradient(circle at 50% 100%, rgba(180,140,255,.45) 0, transparent 35%),
-    linear-gradient(135deg, #dcecff, #b9d3ff 45%, #d9c8ff);
-  background-attachment: fixed;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text",
+    "SF Pro Display", "Helvetica Neue", sans-serif;
+  color: #000;
+  background: #f2f2f7;
+  -webkit-font-smoothing: antialiased;
 }
 
-/* Effet général de verre */
-
-header,
-main {
-  position: relative;
-}
+/* HEADER iOS */
 
 header {
-  padding: 24px 18px 18px;
-  background: rgba(255,255,255,.25);
-  backdrop-filter: blur(25px) saturate(160%);
-  -webkit-backdrop-filter: blur(25px) saturate(160%);
-  border-bottom: 1px solid rgba(255,255,255,.45);
-  box-shadow: 0 8px 30px rgba(50,80,140,.12);
+  padding: 18px 20px 12px;
+  background: #f2f2f7;
+  border-bottom: 0;
 }
 
 h1 {
   margin: 0;
-  font-size: 30px;
-  font-weight: 750;
-  letter-spacing: -0.8px;
+  font-size: 34px;
+  line-height: 1.1;
+  font-weight: 700;
+  letter-spacing: -1.1px;
 }
 
 .sub {
-  color: rgba(30,45,75,.65);
-  margin-top: 5px;
-  font-size: 14px;
+  margin-top: 6px;
+  color: #8e8e93;
+  font-size: 15px;
 }
 
+/* CONTENU */
+
 main {
-  padding: 18px 16px 40px;
+  padding: 8px 16px 100px;
   max-width: 760px;
   margin: auto;
 }
 
-/* Barre de recherche */
+/* BARRE DE RECHERCHE */
 
 .bar {
   display: flex;
-  gap: 9px;
-  margin-bottom: 14px;
+  gap: 8px;
+  margin: 4px 0 16px;
+}
+
+.bar input {
+  flex: 1;
+  min-width: 0;
 }
 
 input,
 select,
 button {
   font: inherit;
-  border: 0;
-  border-radius: 15px;
-  padding: 12px 14px;
 }
 
 input,
 select {
-  background: rgba(255,255,255,.48);
-  color: #111827;
-  border: 1px solid rgba(255,255,255,.7);
-  box-shadow:
-    inset 0 1px 1px rgba(255,255,255,.8),
-    0 5px 18px rgba(50,80,140,.08);
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
+  border: 0;
   outline: none;
+  border-radius: 11px;
+  padding: 11px 13px;
+  background: #e5e5ea;
+  color: #000;
+  font-size: 16px;
+}
+
+input::placeholder {
+  color: #8e8e93;
 }
 
 input:focus,
 select:focus {
-  box-shadow:
-    0 0 0 3px rgba(80,130,255,.18),
-    inset 0 1px 1px rgba(255,255,255,.9);
-}
-
-input::placeholder {
-  color: rgba(40,55,85,.5);
+  background: #dedee3;
 }
 
 input[type="number"] {
   min-width: 0;
 }
 
-input[style] {
-  background: rgba(255,255,255,.48) !important;
-}
-
-/* Boutons */
+/* BOUTONS */
 
 button {
-  background: linear-gradient(
-    135deg,
-    rgba(255,255,255,.9),
-    rgba(225,235,255,.65)
-  );
-  color: #17213a;
-  font-weight: 650;
-  border: 1px solid rgba(255,255,255,.8);
-  box-shadow:
-    0 6px 18px rgba(50,80,140,.14),
-    inset 0 1px 1px rgba(255,255,255,.9);
+  border: 0;
+  border-radius: 11px;
+  padding: 11px 15px;
+  background: #007aff;
+  color: white;
+  font-weight: 600;
+  font-size: 16px;
   cursor: pointer;
-  transition: transform .18s ease, box-shadow .18s ease;
-}
-
-button:hover {
-  transform: translateY(-1px);
-  box-shadow:
-    0 9px 24px rgba(50,80,140,.18),
-    inset 0 1px 1px rgba(255,255,255,1);
+  transition: opacity .15s ease, transform .1s ease;
 }
 
 button:active {
-  transform: scale(.97);
+  opacity: .65;
+  transform: scale(.98);
 }
 
-/* Filtres */
+/* FILTRES */
 
 .filters {
   display: flex;
   gap: 8px;
-  overflow: auto;
-  margin-bottom: 16px;
+  overflow-x: auto;
+  margin: 0 -16px 16px;
+  padding: 0 16px 2px;
+  scrollbar-width: none;
+}
+
+.filters::-webkit-scrollbar {
+  display: none;
 }
 
 .filters select {
   min-width: 145px;
+  background: #e5e5ea;
 }
 
-/* Cartes produits */
+/* LISTE DES PRODUITS */
 
 .card {
-  background: rgba(255,255,255,.38);
-  border: 1px solid rgba(255,255,255,.65);
-  border-radius: 22px;
-  padding: 14px;
-  margin: 11px 0;
+  position: relative;
   display: flex;
   gap: 14px;
-  box-shadow:
-    0 12px 35px rgba(50,80,140,.13),
-    inset 0 1px 1px rgba(255,255,255,.8);
-  backdrop-filter: blur(22px) saturate(140%);
-  -webkit-backdrop-filter: blur(22px) saturate(140%);
+  margin: 0;
+  padding: 14px 4px;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  overflow: visible;
+}
+
+.card + .card {
+  border-top: 1px solid #d1d1d6;
 }
 
 .pic {
-  width: 88px;
-  height: 88px;
-  flex-shrink: 0;
-  border-radius: 17px;
-  background: rgba(255,255,255,.5);
+  width: 92px;
+  height: 92px;
+  flex: 0 0 92px;
+  border-radius: 12px;
+  background: #e5e5ea;
   object-fit: cover;
-  border: 1px solid rgba(255,255,255,.65);
+  border: 0;
 }
 
 .info {
@@ -191,65 +177,79 @@ button:active {
 }
 
 .name {
-  font-weight: 750;
   font-size: 17px;
-  letter-spacing: -.2px;
+  line-height: 1.25;
+  font-weight: 600;
+  color: #000;
 }
 
 .price {
-  font-size: 18px;
-  font-weight: 750;
-  margin-top: 3px;
+  margin-top: 4px;
+  font-size: 17px;
+  font-weight: 600;
+  color: #000;
 }
 
 .desc {
   margin-top: 5px;
-  color: rgba(30,45,75,.65);
-  font-size: 14px;
+  color: #8e8e93;
+  font-size: 15px;
+  line-height: 1.25;
 }
 
 .tag {
   display: inline-block;
   margin-top: 8px;
-  padding: 5px 9px;
-  border-radius: 999px;
-  background: rgba(255,255,255,.48);
-  border: 1px solid rgba(255,255,255,.6);
+  padding: 4px 8px;
+  border-radius: 7px;
+  background: #e5e5ea;
+  color: #636366;
   font-size: 12px;
-  color: rgba(30,45,75,.75);
+  font-weight: 500;
 }
 
-/* État vide */
+/* BOUTONS DES CARTES */
+
+.card button {
+  margin-top: 8px;
+  padding: 7px 10px;
+  font-size: 14px;
+  border-radius: 8px;
+}
+
+.card button[style] {
+  background: #e5e5ea !important;
+  color: #000 !important;
+}
+
+/* ÉTAT VIDE */
 
 .empty {
+  margin-top: 20px;
+  padding: 55px 20px;
   text-align: center;
-  color: rgba(40,55,85,.65);
-  padding: 60px 20px;
-  background: rgba(255,255,255,.3);
-  border: 1px solid rgba(255,255,255,.55);
-  border-radius: 24px;
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  color: #8e8e93;
+  font-size: 15px;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
 }
 
-/* Fenêtre Ajouter */
+/* FENÊTRE D'AJOUT */
 
 dialog {
-  border: 1px solid rgba(255,255,255,.75);
-  border-radius: 26px;
   width: min(92%, 540px);
+  margin: auto;
   padding: 20px;
-  background: rgba(240,247,255,.62);
-  color: #111827;
-  box-shadow:
-    0 30px 80px rgba(30,50,100,.3),
-    inset 0 1px 1px rgba(255,255,255,.95);
-  backdrop-filter: blur(35px) saturate(150%);
-  -webkit-backdrop-filter: blur(35px) saturate(150%);
+  border: 0;
+  border-radius: 20px;
+  background: #f2f2f7;
+  color: #000;
+  box-shadow: 0 20px 60px rgba(0,0,0,.25);
 }
 
 dialog::backdrop {
-  background: rgba(25,40,75,.28);
+  background: rgba(0,0,0,.35);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
 }
@@ -278,71 +278,115 @@ a {
   text-decoration: none;
 }
 
-/* Petit effet lumineux */
+/* CHAMP URL + BOUTON COLLER */
 
-header::before,
-dialog::before,
-.card::before {
-  content: "";
-  position: absolute;
-  pointer-events: none;
-  inset: 0;
-  border-radius: inherit;
-  background: linear-gradient(
-    120deg,
-    rgba(255,255,255,.45),
-    transparent 35%,
-    transparent 70%,
-    rgba(255,255,255,.12)
-  );
-  opacity: .7;
+#url {
+  min-width: 0;
 }
 
-.card {
-  position: relative;
-  overflow: hidden;
-}
+/* MOBILE */
 
 @media (max-width: 600px) {
 
   header {
-    padding: 20px 15px 15px;
+    padding: 20px 20px 12px;
   }
 
   h1 {
-    font-size: 27px;
+    font-size: 34px;
   }
 
   main {
-    padding: 14px 12px 30px;
+    padding: 8px 16px 100px;
   }
 
   .bar {
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
   }
 
   .bar input {
-    width: 100%;
-    flex: 1 0 100%;
+    width: auto;
   }
 
   .bar button {
-    flex: 1;
+    flex-shrink: 0;
   }
 
   .card {
-    padding: 12px;
-    border-radius: 20px;
+    padding: 14px 2px;
   }
 
   .pic {
-    width: 75px;
-    height: 75px;
+    width: 82px;
+    height: 82px;
+    flex-basis: 82px;
   }
 
   dialog {
-    width: calc(100% - 24px);
-    padding: 17px;
+    width: calc(100% - 28px);
+    padding: 18px;
+  }
+}
+
+/* MODE SOMBRE iOS */
+
+@media (prefers-color-scheme: dark) {
+
+  html,
+  body,
+  header {
+    background: #000;
+    color: #fff;
+  }
+
+  input,
+  select {
+    background: #1c1c1e;
+    color: #fff;
+  }
+
+  input::placeholder {
+    color: #8e8e93;
+  }
+
+  .filters select {
+    background: #1c1c1e;
+  }
+
+  .name,
+  .price {
+    color: #fff;
+  }
+
+  .desc {
+    color: #98989d;
+  }
+
+  .tag {
+    background: #1c1c1e;
+    color: #98989d;
+  }
+
+  .card + .card {
+    border-color: #38383a;
+  }
+
+  .pic {
+    background: #1c1c1e;
+  }
+
+  .empty {
+    color: #98989d;
+  }
+
+  dialog {
+    background: #1c1c1e;
+    color: #fff;
+  }
+
+  .card button[style] {
+    background: #2c2c2e !important;
+    color: #fff !important;
   }
 }
 </style>  
