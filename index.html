@@ -1525,6 +1525,35 @@ if ("serviceWorker" in navigator) {
     navigator.serviceWorker.register("./sw.js");
   });
 }
+function showPage(page) {
+  document.querySelectorAll(".app-page").forEach(function(p) {
+    p.classList.remove("active-page");
+  });
+
+  const selectedPage = document.getElementById("page-" + page);
+
+  if (selectedPage) {
+    selectedPage.classList.add("active-page");
+  }
+
+  document.querySelectorAll(".tab").forEach(function(tab) {
+    tab.classList.remove("active");
+  });
+
+  const selectedTab = document.querySelector(
+    '.tab[data-page="' + page + '"]'
+  );
+
+  if (selectedTab) {
+    selectedTab.classList.add("active");
+  }
+
+  window.scrollTo(0, 0);
+
+  if (typeof updateHome === "function") updateHome();
+  if (typeof updateSearchPage === "function") updateSearchPage();
+  if (typeof updateFavorites === "function") updateFavorites();
+}
 </script>
 <nav class="ios-tabbar">
   <button
