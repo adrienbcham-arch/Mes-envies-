@@ -918,11 +918,265 @@ a {
     border-radius: 28px;
   }
 }
+/* ================================
+   PAGES DE L'APPLICATION
+================================ */
+
+.app-page {
+  display: none;
+  animation: pageIn .22s ease-out;
+}
+
+.app-page.active-page {
+  display: block;
+}
+
+.app-page h2 {
+  margin: 12px 4px 18px;
+  font-size: 28px;
+  letter-spacing: -0.7px;
+  font-weight: 750;
+}
+
+.section-title {
+  margin-top: 28px !important;
+}
+
+/* ================================
+   STATISTIQUES ACCUEIL
+================================ */
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.glass-stat {
+  position: relative;
+  overflow: hidden;
+
+  min-height: 105px;
+  padding: 18px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  border-radius: 25px;
+
+  background: rgba(255,255,255,.48);
+  border: 1px solid rgba(255,255,255,.75);
+
+  backdrop-filter: blur(25px) saturate(170%);
+  -webkit-backdrop-filter: blur(25px) saturate(170%);
+
+  box-shadow:
+    0 12px 30px rgba(40,65,110,.11),
+    inset 0 1px 1px rgba(255,255,255,.95);
+}
+
+.glass-stat span {
+  color: #8e8e93;
+  font-size: 14px;
+}
+
+.glass-stat strong {
+  font-size: 27px;
+  letter-spacing: -1px;
+}
+
+/* ================================
+   RECHERCHE
+================================ */
+
+.search-bubble {
+  padding: 5px;
+
+  border-radius: 22px;
+
+  background: rgba(255,255,255,.42);
+  border: 1px solid rgba(255,255,255,.7);
+
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+
+  box-shadow:
+    0 10px 28px rgba(40,65,110,.1),
+    inset 0 1px 1px rgba(255,255,255,.9);
+
+  margin-bottom: 18px;
+}
+
+.search-bubble input {
+  width: 100%;
+  background: rgba(255,255,255,.38);
+  box-shadow: none;
+  border: 0;
+}
+
+/* ================================
+   PAGE AJOUT
+================================ */
+
+.add-card {
+  display: grid;
+  gap: 11px;
+
+  padding: 17px;
+
+  border-radius: 28px;
+
+  background: rgba(255,255,255,.45);
+  border: 1px solid rgba(255,255,255,.75);
+
+  backdrop-filter: blur(28px) saturate(170%);
+  -webkit-backdrop-filter: blur(28px) saturate(170%);
+
+  box-shadow:
+    0 14px 38px rgba(40,65,110,.13),
+    inset 0 1px 1px rgba(255,255,255,.95);
+}
+
+.add-card input,
+.add-card select {
+  width: 100%;
+}
+
+.main-add-button {
+  margin-top: 5px;
+
+  background: linear-gradient(
+    135deg,
+    #1684ff,
+    #006eea
+  );
+
+  color: white;
+
+  border: 1px solid rgba(255,255,255,.4);
+
+  box-shadow:
+    0 9px 24px rgba(0,110,235,.25);
+}
+
+/* ================================
+   ANIMATION
+================================ */
+
+@keyframes pageIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ================================
+   MOBILE
+================================ */
+
+@media (max-width: 600px) {
+
+  .app-page h2 {
+    font-size: 28px;
+    margin-top: 10px;
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .glass-stat {
+    min-height: 100px;
+    padding: 16px;
+  }
+
+  .glass-stat strong {
+    font-size: 25px;
+  }
+
+  .add-card {
+    padding: 15px;
+    border-radius: 25px;
+  }
+}
 </style>
 </head>
 <body>
 <header><h1>Mes Envies</h1><div class="sub" id="summary">0 produit</div></header>
 <main>
+<section id="page-home" class="app-page active-page">
+  <h2>Vue d’ensemble</h2>
+
+  <div class="stats-grid">
+    <div class="glass-stat">
+      <span>Envies</span>
+      <strong id="home-count">0</strong>
+    </div>
+
+    <div class="glass-stat">
+      <span>Total</span>
+      <strong id="home-total">0 €</strong>
+    </div>
+
+    <div class="glass-stat">
+      <span>Catégories</span>
+      <strong id="home-categories">0</strong>
+    </div>
+  </div>
+
+  <h2 class="section-title">Dernières envies</h2>
+  <div id="home-list"></div>
+</section>
+
+<section id="page-search" class="app-page">
+  <h2>Recherche</h2>
+
+  <div class="search-bubble">
+    <input id="search-page" placeholder="Rechercher un produit">
+  </div>
+
+  <div id="search-list"></div>
+</section>
+
+<section id="page-add" class="app-page">
+  <h2>Ajouter une envie</h2>
+
+  <div class="add-card">
+    <input id="page-url" placeholder="URL de la page produit">
+    <input id="page-name" placeholder="Nom du produit">
+
+    <div class="row">
+      <input id="page-price" type="number" step="0.01" placeholder="Prix (€)">
+
+      <select id="page-cat">
+        <option>Autres</option>
+        <option>Électronique</option>
+        <option>Vêtements</option>
+        <option>Sport</option>
+        <option>Maison</option>
+        <option>Beauté</option>
+      </select>
+    </div>
+
+    <input id="page-image" placeholder="URL de l'image (optionnel)">
+    <input id="page-desc" placeholder="Petite description">
+
+    <button class="main-add-button" onclick="saveFromPage()">
+      Ajouter à mes envies
+    </button>
+  </div>
+</section>
+
+<section id="page-favorites" class="app-page">
+  <h2>Favoris</h2>
+  <div id="favorites-list"></div>
+</section>
 <div class="bar">
   <input id="search" placeholder="Rechercher un produit...">
   <button onclick="pasteLink()">Ajouter un lien</button>
