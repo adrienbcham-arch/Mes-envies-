@@ -1105,6 +1105,221 @@ a {
     border-radius: 25px;
   }
 }
+/* ================================
+   NAVIGATION ENTRE LES PAGES
+================================ */
+
+function showPage(page) {
+
+  document.querySelectorAll(".app-page").forEach(p => {
+    p.classList.remove("active-page");
+  });
+
+  const selected = document.getElementById("page-" + page);
+
+  if (selected) {
+    selected.classList.add("active-page");
+  }
+
+  document.querySelectorAll(".tab").forEach(tab => {
+    tab.classList.remove("active");
+  });
+
+  const activeTab = document.querySelector(
+    '.tab[data-page="' + page + '"]'
+  );
+
+  if (activeTab) {
+    activeTab.classList.add("active");
+  }
+
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth"
+  });
+
+  updateHome();
+  updateSearchPage();
+  updateFavorites();
+}
+
+
+/* ================================
+   ACCUEIL
+================================ */
+
+function updateHome() {
+
+  const count = document.getElementById("home-count");
+  const total = document.getElementById("home-total");
+  const categories = document.getElementById("home-categories");
+
+  if (!count) return;
+
+  count.textContent = products.length;
+
+  const totalPrice = products.reduce(
+    (sum, p) => sum + Number(p.price || 0),
+    0
+  );
+
+  total.textContent = totalPrice.toFixed(2) + " €";
+
+  const cats = new Set(
+    products.map(p => p.cat)
+  );
+
+  categories.textContent = cats.size;
+
+  const list = document.getElementById("home-list");
+
+  if (!list) return;
+
+  list.innerHTML = products
+    .slice(0, 3)
+    .map(p => createProductCard(p))
+    .join("");
+}
+
+
+/* ================================
+   RECHERCHE
+================================ */
+
+function updateSearchPage() {
+
+  const list = document.getElementById("search-list");
+
+  if (!list) return;
+
+  const search =
+    (document.getElementById("search-page")?.value || "")
+      .toLowerCase();
+
+  const filtered = products.filter(p =>
+    (p.name + " " + p.desc)
+      .toLowerCase()
+      .includes(search)
+  );
+
+  list.innerHTML = filtered.length
+    ? filtered.map(p => createProductCard(p)).join("")
+    : `<div class="empty">
+        Aucun produit trouvé.
+       </div>`;
+}
+
+
+/* ================================
+   FAVORIS
+================================ */
+
+function updateFavorites() {
+
+  const list = document.getElementById("favorites-list");
+
+  if (!list) return;
+
+  const favorites = products.filter(
+    p => p.favorite === true
+  );
+
+  list.innerHTML = favorites.length
+    ? favorites.map(p => createProductCard(p)).join("")
+    : `<div class="empty">
+        Aucun favori pour le moment.
+       </div>`;
+}
+
+
+/* ================================
+   CARTE PRODUIT
+================================ */
+
+function createProductCard(p) {
+
+  return `
+    <article class="card">
+
+      ${
+        p.image
+          ? `<img class="pic" src="${esc(p.image)}">`
+          : `<div class="pic"></div>`
+      }
+
+      <div class="info">
+
+        <div class="name">
+          ${esc(p.name)}
+        </div>
+
+        <div class="price">
+          ${Number(p.price || 0).toFixed(2)} €
+        </div>
+
+        <div class="desc">
+          ${esc(p.desc || "Aucune description")}
+        </div>
+
+        <span class="tag">
+          ${esc(p.cat)}
+        </span>
+
+        <div style="margin-top:9px">
+
+          <a href="${esc(p.url)}" target="_blank">
+            <button>Voir le produit</button>
+          </a>
+
+          <button
+            onclick="toggleFavorite(${p.id})"
+            style="background:#eee;color:#111;margin-left:5px"
+          >
+            ${p.favorite ? "♥ Favori" : "♡ Favori"}
+          </button>
+
+        </div>
+
+      </div>
+
+    </article>
+  `;
+}
+
+
+/* ================================
+   FAVORI / NON FAVORI
+================================ */
+
+function toggleFavorite(id) {
+
+  const product = products.find(
+    p => p.id === id
+  );
+
+  if (!product) return;
+
+  product.favorite = !product.favorite;
+
+  localStorage.setItem(
+    KEY,
+    JSON.stringify(products)
+  );
+
+  render();
+  updateHome();
+  updateSearchPage();
+  updateFavorites();
+}
+
+
+/* ================================
+   RECHERCHE EN DIRECT
+================================ */
+
+document
+  .getElementById("search-page")
+  ?.addEventListener("input", updateSearchPage);
 </style>
 </head>
 <body>
@@ -1312,25 +1527,41 @@ if ("serviceWorker" in navigator) {
 }
 </script>
 <nav class="ios-tabbar">
-  <button class="tab active" onclick="window.scrollTo({top:0,behavior:'smooth'})">
-    <span class="tab-icon">⌂</span>
-    <span>Accueil</span>
-  </button>
+  <button
+  class="tab active"
+  data-page="home"
+  onclick="showPage('home')"
+>
+  <span class="tab-icon">⌂</span>
+  <span>Accueil</span>
+</button>
 
-  <button class="tab" onclick="document.getElementById('search').focus()">
-    <span class="tab-icon">⌕</span>
-    <span>Rechercher</span>
-  </button>
+  <button
+  class="tab"
+  data-page="search"
+  onclick="showPage('search')"
+>
+  <span class="tab-icon">⌕</span>
+  <span>Recherche</span>
+</button>
 
-  <button class="tab add-tab" onclick="openForm()">
-    <span class="add-circle">＋</span>
-    <span>Ajouter</span>
-  </button>
+  <button
+  class="tab add-tab"
+  data-page="add"
+  onclick="showPage('add')"
+>
+  <span class="add-circle">＋</span>
+  <span>Ajouter</span>
+</button>
 
-  <button class="tab" onclick="window.scrollTo({top:0,behavior:'smooth'})">
-    <span class="tab-icon">♡</span>
-    <span>Envies</span>
-  </button>
+  <button
+  class="tab"
+  data-page="favorites"
+  onclick="showPage('favorites')"
+>
+  <span class="tab-icon">♡</span>
+  <span>Favoris</span>
+</button>
 </nav>
 </body>
 </html>
